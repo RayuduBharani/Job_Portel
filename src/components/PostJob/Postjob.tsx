@@ -45,19 +45,22 @@ export default function Postjob() {
       JobDescription: JobDescription
     }
     if (cookie) {
-      const CookieData= JSON.parse(cookie)
-      const response = await fetch("http://localhost:8000/postjob", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${CookieData.token}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(NewData)
-      })
-      const data = await response.json()
-      if (data) {
-        console.log(data)
-        navigate("/jobs")
+      try {
+        const CookieData: IcookieData = JSON.parse(cookie);
+        const response = await fetch("http://localhost:8000/postjob", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${CookieData.token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(NewData),
+        })
+        const data = await response.json();
+        console.log(data);
+        navigate("/jobs");
+      } 
+      catch (error) {
+        console.error("Error posting job:", error);
       }
     }
   }
@@ -65,7 +68,7 @@ export default function Postjob() {
   return (
     <div className="pt-[75px] w-full h-screen bg-background flex justify-center flex-col items-center">
       <p className="text-center font-bold text-lg">Post a Job</p>
-      <div className="w-[70%] h-[90%] p-2 overflow-y-scroll hide-scrollbar">
+      <div className="w-[70%] h-[90%] p-2 overflow-y-scroll hide-scrollbar max-sm:w-[90%]">
         <form onSubmit={handelSubmit} className="flex flex-col gap-5">
           {items.map((item) => {
             return (
@@ -75,7 +78,7 @@ export default function Postjob() {
 
                 {item.label === "JobType" ? (
                   <Select name={item.label}>
-                    <SelectTrigger id="job-type">
+                    <SelectTrigger id="JobType">
                       <SelectValue placeholder="Select Job Type" />
                     </SelectTrigger>
                     <SelectContent>

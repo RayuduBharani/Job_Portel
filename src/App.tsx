@@ -13,6 +13,7 @@
   import Cookies from "js-cookie";
   import Postjob from "./components/PostJob/Postjob";
 import PostInfo from "./components/PostInfo";
+import NotFound from "./Pages/NotFound";
 
   export default function App() {
     const navigate = useNavigate();
@@ -49,6 +50,7 @@ import PostInfo from "./components/PostInfo";
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/onboard" element={<Onboard />} />
+            <Route path="/" element={<Home />} />
 
             <Route path="/jobs" element={<Jobs />} >
               
@@ -63,7 +65,7 @@ import PostInfo from "./components/PostInfo";
             <Route path="/home" element={<Home />} />
             <Route path="/Account" element={<Account />} />
             <Route path="/companies" element={<Companies />} />
-            <Route path="*" element={<SignIn />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </div>

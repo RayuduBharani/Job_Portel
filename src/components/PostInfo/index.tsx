@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Separator } from "../ui/separator"
-
 import Application from "../Application"
-
 
 export default function PostInfo() {
     const data = useParams()
-
     const [PostData, setPostData] = useState<IrecruiterJobData>()
-
     async function FetchJobDetailes() {
         try {
             const response = await fetch(`http://localhost:8000/findjob/${data.name}`);
@@ -21,7 +17,6 @@ export default function PostInfo() {
             console.error(err);
         }
     }
-
     useEffect(() => {
         FetchJobDetailes()
     }, [])
@@ -36,7 +31,9 @@ export default function PostInfo() {
                     <Separator className="mt-3" />
                 </div>
 
-                <Application PostData={PostData} />
+
+                <Application PostData={PostData}/>
+
 
                 <div className="w-full h-full col-span-2 row-span-1 py-5">
                     <p className="font-medium text-xl pt-2">Job Description</p>
