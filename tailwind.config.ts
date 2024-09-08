@@ -24,6 +24,16 @@ module.exports = {
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
       },
+      scrollbar: {
+        width: '2px',
+        colors: {
+          'thumb': 'hsl(var(--background))', // scrollbar thumb color
+          'track': '#EDF2F7', // scrollbar track color
+        },
+        borderRadius: {
+          'scrollbar-rounded': '10px', // Adding rounded corners to the scrollbar thumb
+        },
+      },
       fontWeight: {
         thin: 100,
         extralight: 200,
@@ -101,7 +111,7 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), addVariablesForColors],
+  plugins: [require("tailwindcss-animate"), require('tailwind-scrollbar')({ nocompatible: true }), addVariablesForColors],
 }
 function addVariablesForColors({ addBase, theme }: any) {
   let allColors = flattenColorPalette(theme("colors"));

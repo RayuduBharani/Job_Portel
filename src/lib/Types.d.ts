@@ -10,6 +10,7 @@ interface IJobCardProps {
 }
 
 interface CandidateFormData {
+    gender : string
     fullName: string;
     phoneNumber: string;
     dateOfBirth: string;
@@ -30,8 +31,8 @@ interface CandidateFormData {
     expectedSalary: string;
     availabilityToStart: string;
     personalStatement: string;
-    _id ?: string
-    _v ?: number 
+    _id?: string
+    _v?: number
 }
 
 interface ILoginData {
@@ -86,6 +87,16 @@ interface IrecruiterJobData {
     updatedAt: string;
     __v: number;
     UrlPath: string
+    Apllications: [
+        {
+            Accept: boolean;
+            Note: string;
+            Pending: boolean;
+            candidateId: string;
+            recruiterId: string;
+            _id: string;
+        }
+    ]
 }
 
 
@@ -94,10 +105,10 @@ interface PostData {
 }
 
 interface Applications {
-    Accept : boolean ,
-    Note : string,
-    Pending : boolean,
-    candidateId : CandidateFormData,
+    Accept: boolean,
+    Note: string,
+    Pending: boolean,
+    candidateId: CandidateFormData,
     recruiterId: {
         _id: string;
         userId: string;
@@ -110,3 +121,77 @@ interface Applications {
         __v: number;
     };
 }[]
+
+
+interface ICandidateApplication {
+    _id: string;
+    Accept: boolean;
+    Note: string;
+    Pending: boolean;
+    candidateId: {
+        emailAddress : string
+        ProfileImage: string
+        fullName: string;
+        phoneNumber: string;
+        dateOfBirth: string;
+        profilePhoto: string;
+        highestQualification: string;
+        collegeName: string;
+        graduationYear: string;
+        specialization: string;
+        workExperience:[ {
+            jobTitle: string;
+            companyName: string;
+            duration: string;
+        }];
+        technicalSkills: string[];
+        softSkills: string[];
+        portfolioLinks: string[];
+        githubProfile: string;
+        linkedInProfile: string;
+        resume: string;
+        preferredJobRoles: string[];
+        locationPreferences: string[];
+        expectedSalary: string;
+        availabilityToStart: string;
+        personalStatement: string;
+        _id?: string
+        _v?: number
+        gender : string
+    };
+    jobId: {
+        JobTitle: string;
+        CompanyName: string;
+        Location: string;
+        SalaryRange: string;
+        JobType: string;
+        RequiredSkills: string[];
+        ExperienceLevel: string;
+        ApplicationDeadline: string;
+        JobDescription: string;
+        createdAt: string;
+        updatedAt: string;
+        __v: number;
+        UrlPath: string
+        Apllications: [
+            {
+                Accept: boolean;
+                Note: string;
+                Pending: boolean;
+                candidateId: string;
+                recruiterId: string;
+                _id: string;
+            }
+        ]
+    };
+    recruiterId: {
+        _id: string;
+        userId: string;
+        name: string;
+        currentCompany: string;
+        currentRole: string;
+    };
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}

@@ -2,12 +2,14 @@ import { MapPin } from "lucide-react";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { Link } from "react-router-dom";
-
-
+import Cookies from "js-cookie";
 export default function JobCard({ RecriterJobs }: IJobCardProps) {
-
     console.log(RecriterJobs)
-
+    const cookies = Cookies.get("bharani")
+    let CookieData: IcookieData | null = null
+    if (cookies) {
+        CookieData = JSON.parse(cookies)
+    }
     return (
         <>
             {
@@ -24,7 +26,14 @@ export default function JobCard({ RecriterJobs }: IJobCardProps) {
                             <p className="mt-3 line-clamp-3 h-[64px] text-sm font-regular text-neutral-500">
                                 {jobs.JobDescription}
                             </p>
-                            <Button className="w-full mt-5" asChild><Link to={`/jobs/${jobs.UrlPath}`}>Show Detailes</Link></Button>
+                            <div className="grid grid-cols-2 justify-between items-center mt-5 gap-2">
+                                {
+                                    CookieData?.role == "recruiter" ? (
+                                        <Button asChild><Link to={`/jobs/Info/Applicants/${jobs.UrlPath}`}>Applicants</Link></Button>
+                                    ) : null
+                                }
+                                <Button className="w-full" asChild><Link to={`/jobs/Info/${jobs.UrlPath}`}>Show Detailes</Link></Button>
+                            </div>
                         </div>
                     )
                 })

@@ -8,10 +8,16 @@ import { Progress } from "./ui/progress";
 import { toast } from "./ui/use-toast";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 export default function CandidateForm() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [candidateFormData, setCandidateFormData] = useState<CandidateFormData>({
     fullName: '',
     phoneNumber: '',
@@ -32,7 +38,8 @@ export default function CandidateForm() {
     locationPreferences: [''],
     expectedSalary: '',
     availabilityToStart: '',
-    personalStatement: ''
+    personalStatement: '',
+    gender: '' // Add gender here
   });
   const [progress, setProgress] = useState<number>(0);
   const [resume, setResume] = useState<File | null>(null);
@@ -62,19 +69,26 @@ export default function CandidateForm() {
           workExperience: updatedWorkExperience,
         };
       });
-    } 
+    }
     else if (['technicalSkills', 'softSkills', 'portfolioLinks', 'preferredJobRoles', 'locationPreferences'].includes(name)) {
       setCandidateFormData((prevData) => ({
         ...prevData,
         [name]: value.split(',').map(skill => skill.trim())
       }));
-    } 
+    }
     else {
       setCandidateFormData((prevData) => ({
         ...prevData,
         [name]: value
       }));
     }
+  }
+
+  function handleGenderChange(value: string) {
+    setCandidateFormData((prevData) => ({
+      ...prevData,
+      gender: value,
+    }));
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -110,26 +124,25 @@ export default function CandidateForm() {
       }
     );
 
-    console.log(candidateFormData)
-    const cookie = Cookies.get("bharani")
-    if(cookie){
-      const CookieData : IcookieData = JSON.parse(cookie)
+    const cookie = Cookies.get("bharani");
+    if (cookie) {
+      const CookieData: IcookieData = JSON.parse(cookie);
 
       const response = await fetch("http://localhost:8000/onboard-candidate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization" : `Bearer ${CookieData.token}`
+          "Authorization": `Bearer ${CookieData.token}`
         },
         body: JSON.stringify(candidateFormData)
-      })
-      const data = await response.json()
-      if(data.success){
-        const cookie = Cookies.get("bharani") || ""
-        const CookieData : IcookieData = JSON.parse(cookie)
-        CookieData.role = "candidate"
-        Cookies.set("bharani" , JSON.stringify(CookieData) , {expires : 365})
-        navigate('/home')
+      });
+      const data = await response.json();
+      if (data.success) {
+        const cookie = Cookies.get("bharani") || "";
+        const CookieData: IcookieData = JSON.parse(cookie);
+        CookieData.role = "candidate";
+        Cookies.set("bharani", JSON.stringify(CookieData), { expires: 365 });
+        navigate('/home');
       }
     }
   }
@@ -166,6 +179,19 @@ export default function CandidateForm() {
       <div>
         <Label htmlFor="graduationYear">Graduation Year *</Label>
         <Input required id="graduationYear" name="graduationYear" type="number" value={candidateFormData.graduationYear} onChange={handleChange} />
+      </div>
+
+      <div className="w-full">
+        <Select name="gender" onValueChange={handleGenderChange}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Gender" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Male">Male</SelectItem>
+            <SelectItem value="Female">Female</SelectItem>
+            <SelectItem value="Transgender">Transgender</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       <div>
@@ -247,7 +273,7 @@ export default function CandidateForm() {
       {/* Additional Information */}
       <div>
         <Label htmlFor="personalStatement">Personal Statement</Label>
-        <Input id="personalStatement" name="personalStatement" value={candidateFormData.personalStatement} onChange={handleChange} className="border rounded px-3 py-2" />
+        <Input id="personalStatement" name="personalStatement" placeholder="Below 6 lines" value={candidateFormData.personalStatement} onChange={handleChange} className="border rounded px-3 py-2" />
       </div>
 
       <div>
